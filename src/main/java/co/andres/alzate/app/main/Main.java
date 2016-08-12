@@ -24,6 +24,7 @@ public class Main {
         int port = getHerokuAssignedPort();
         logger.info("Port found" + port);
         port(port);
+        staticFileLocation("/public");
         options("/*", (request, response) -> {
 
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");

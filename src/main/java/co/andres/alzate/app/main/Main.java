@@ -1,5 +1,6 @@
 package co.andres.alzate.app.main;
 
+import org.apache.log4j.Logger;
 import org.apache.spark.api.java.*;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.function.Function;
@@ -10,10 +11,11 @@ import static spark.Spark.*;
  * Created by afprog on 8/08/16.
  */
 public class Main {
+    static Logger logger = Logger.getLogger(Main.class.getName());
     public static void main(String[] args) {
-        System.out.println("########################## App Started #######################");
+        logger.info("########################## App Started #######################");
         int port = getHerokuAssignedPort();
-        System.out.println("Port found" + port);
+        logger.info("Port found" + port);
         port(port);
         get("/hello", (req, res) -> "Hello Heroku World");
     }

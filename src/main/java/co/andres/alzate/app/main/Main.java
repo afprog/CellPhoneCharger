@@ -11,8 +11,9 @@ import static spark.Spark.*;
  */
 public class Main {
     public static void main(String[] args) {
+        System.out.println("########################## App Started #######################");
         port(getHerokuAssignedPort());
-        get("/hello", (req, res) -> "Hello Heroku World.");
+        get("/hello", (req, res) -> "Hello Heroku World");
     }
 
     static int getHerokuAssignedPort() {

@@ -4,11 +4,14 @@ import org.apache.log4j.Logger;
 import org.apache.spark.api.java.*;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.function.Function;
+import org.iq80.leveldb.DB;
 import spark.Filter;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 
+
+import java.util.Arrays;
 import java.util.HashMap;
 
 import static spark.Spark.*;
@@ -25,7 +28,7 @@ public class Main {
         logger.info("Port found" + port);
         port(port);
         staticFileLocation("/public");
-        options("/*", (request, response) -> {
+        /*options("*//*", (request, response) -> {
 
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
             if (accessControlRequestHeaders != null) {
@@ -46,11 +49,22 @@ public class Main {
             response.header("Access-Control-Allow-Headers", "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,");
             // Note: this may or may not be necessary in your particular application
             response.type("application/json");
-        });
+        });*/
+        MongoClient mongoClient = new MongoClient();
+// or
+        MongoClient mongoClient = new MongoClient( "localhost" );
+// or
+        MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+// or, to connect to a replica set, with auto-discovery of the primary, supply a seed list of members
+        MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress("localhost", 27017),
+                new ServerAddress("localhost", 27018),
+                new ServerAddress("localhost", 27019)));
+
+        DB db = mongoClient.getDB( "mydb" );
         get("/hello", (req, res) -> "Hello Heroku World");
     }
 
-    private static final HashMap<String, String> corsHeaders = new HashMap<String, String>();
+    /*private static final HashMap<String, String> corsHeaders = new HashMap<String, String>();
 
     static {
         corsHeaders.put("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
@@ -69,7 +83,7 @@ public class Main {
             }
         };
         Spark.after(filter);
-    }
+    }*/
 
     static int getHerokuAssignedPort() {
         ProcessBuilder processBuilder = new ProcessBuilder();

@@ -1,10 +1,12 @@
 package co.andres.alzate.app.main;
 
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 import org.apache.log4j.Logger;
 import org.apache.spark.api.java.*;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.function.Function;
-import org.iq80.leveldb.DB;
 import spark.Filter;
 import spark.Request;
 import spark.Response;
@@ -50,15 +52,8 @@ public class Main {
             // Note: this may or may not be necessary in your particular application
             response.type("application/json");
         });*/
-        MongoClient mongoClient = new MongoClient();
-// or
-        MongoClient mongoClient = new MongoClient( "localhost" );
-// or
+
         MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
-// or, to connect to a replica set, with auto-discovery of the primary, supply a seed list of members
-        MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress("localhost", 27017),
-                new ServerAddress("localhost", 27018),
-                new ServerAddress("localhost", 27019)));
 
         DB db = mongoClient.getDB( "mydb" );
         get("/hello", (req, res) -> "Hello Heroku World");
